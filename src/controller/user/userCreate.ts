@@ -1,30 +1,34 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { Task } from "../types";
+import { Task, User } from "../../types";
+import { AppBindings } from "bindings";
+import { Context } from "hono";
+import { userTable } from "db/user";
+import { log } from "console";
 
-export class TaskCreate extends OpenAPIRoute {
+export class UserCreate extends OpenAPIRoute {
   schema = {
-    tags: ["Tasks"],
-    summary: "Create a new Task",
+    tags: ["User"],
+    summary: "Create a new User",
     request: {
       body: {
         content: {
           "application/json": {
-            schema: Task,
+            schema: User,
           },
         },
       },
     },
     responses: {
       "200": {
-        description: "Returns the created task",
+        description: "Returns the created User",
         content: {
           "application/json": {
             schema: z.object({
               series: z.object({
                 success: Bool(),
                 result: z.object({
-                  task: Task,
+                  user: User,
                 }),
               }),
             }),
@@ -34,27 +38,29 @@ export class TaskCreate extends OpenAPIRoute {
     },
   };
 
-  async handle(c) {
+  async handle(c: Context<AppBindings>) {
     // Get validated data
-    console.log("Validating data", c);
+    // console.log("Validating data", c);
 
     const data = await this.getValidatedData<typeof this.schema>();
 
     // Retrieve the validated request body
-    const taskToCreate = data.body;
+    const user = data.body;
+    console.log("User", user);
 
     // Implement your own object insertion here
+    const db = c.get("db");
+    const res = await db.insert(userTable).values({
+      username: user.username,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      refreshToken: user.refreshToken,
+    });
 
     // return the new task
     return {
       success: true,
-      task: {
-        name: taskToCreate.name,
-        slug: taskToCreate.slug,
-        description: taskToCreate.description,
-        completed: taskToCreate.completed,
-        due_date: taskToCreate.due_date,
-      },
+      result: res,
     };
   }
 }

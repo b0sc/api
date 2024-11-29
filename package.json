@@ -1,22 +1,32 @@
 {
-	"name": "cloudflare-workers-openapi",
-	"version": "0.0.1",
-	"private": true,
-	"scripts": {
-		"deploy": "wrangler deploy",
-		"dev": "wrangler dev",
-		"start": "wrangler dev",
-		"cf-typegen": "wrangler types"
-	},
-	"dependencies": {
-		"chanfana": "^2.0.2",
-		"hono": "^4.4.7",
-		"zod": "^3.23.8"
-	},
-	"devDependencies": {
-		"@cloudflare/workers-types": "^4.20241112.0",
-		"@types/node": "20.8.3",
-		"@types/service-worker-mock": "^2.0.1",
-		"wrangler": "^3.60.3"
-	}
+  "name": "cloudflare-workers-openapi",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "cf-typegen": "wrangler types",
+    "drizzle:studio": "drizzle-kit studio",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit generate",
+    "db:wrangler_migrate": "wrangler d1 migrations apply demo --local",
+    "db:migrate:prod": "wrangler d1 migrations apply demo --remote",
+    "generate": "drizzle-kit generate:sqlite --schema=src/schema.ts",
+    "up": "drizzle-kit up:sqlite --schema=src/schema.ts"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.6.0",
+    "chanfana": "^2.0.2",
+    "drizzle-orm": "^0.36.4",
+    "hono": "^4.4.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241112.0",
+    "@types/node": "20.8.3",
+    "@types/service-worker-mock": "^2.0.1",
+    "drizzle-kit": "^0.28.1",
+    "wrangler": "^3.60.3"
+  }
 }

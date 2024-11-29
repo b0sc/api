@@ -7,6 +7,15 @@ routes = [
   { pattern = "b0sc.tech", custom_domain = true }
 ]
 assets = { directory = "public" }
+node_compat = true
+
+# Bind a D1 database. D1 is Cloudflare’s native serverless SQL database.
+# Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#d1-databases
+[[d1_databases]]
+binding = "DB"
+database_name = "api-db"
+migrations_dir = "./migrations"
+database_id = "505a3a6b-2ebe-4475-bc3a-79c5db0838c7"
 
 # Workers Logs
 # Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
@@ -39,13 +48,6 @@ enabled = true
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#browser-rendering
 # [browser]
 # binding = "MY_BROWSER"
-
-# Bind a D1 database. D1 is Cloudflare’s native serverless SQL database.
-# Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#d1-databases
-# [[d1_databases]]
-# binding = "MY_DB"
-# database_name = "my-database"
-# database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
 # Bind a dispatch namespace. Use Workers for Platforms to deploy serverless functions programmatically on behalf of your customers.
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#dispatch-namespace-bindings-workers-for-platforms
