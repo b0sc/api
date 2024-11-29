@@ -6,6 +6,7 @@ routes = [
   { pattern = "api.bosc.org.np", custom_domain = true },
   { pattern = "b0sc.tech", custom_domain = true }
 ]
+assets = { directory = "public" }
 
 # Workers Logs
 # Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
@@ -13,10 +14,6 @@ routes = [
 [observability]
 enabled = true
 
-# Automatically place your workloads in an optimal location to minimize latency.
-# If you are running back-end logic in a Worker, running it closer to your back-end infrastructure
-# rather than the end user may result in better performance.
-# Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
 # [placement]
 # mode = "smart"
 
