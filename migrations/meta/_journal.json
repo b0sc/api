@@ -29,6 +29,27 @@
       "when": 1732896275323,
       "tag": "0003_living_namorita",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1732969324211,
+      "tag": "0004_burly_thing",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1732971157922,
+      "tag": "0005_pretty_karnak",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1732983394432,
+      "tag": "0006_dizzy_blazing_skull",
+      "breakpoints": true
     }
   ]
 }

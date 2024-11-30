@@ -1,6 +1,5 @@
 import { defineConfig } from "drizzle-kit";
 import crypto from "node:crypto";
-import { get } from "node:http";
 
 process.env.USE_LOCAL_DB === "true"
   ? console.log("Using local database")

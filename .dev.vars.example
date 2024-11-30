@@ -1,6 +1,7 @@
-USERNAME=
-PASSWORD=
+USERNAME=admin
+PASSWORD=admin
+ENVIRONMENT=development
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
-API_DOMAIN=api.bosc.org.np
-WEB_DOMAIN=bosc.org.np
+API_DOMAIN=http://localhost:8787
+WEB_DOMAIN=http://localhost:4321

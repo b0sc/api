@@ -1,10 +1,8 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { User } from "../../types";
 import { AppBindings } from "bindings";
 import { Context } from "hono";
-import { env } from "hono/adapter";
-import { userTable } from "db/user";
+import { insertUserSchema, selectUserSchema, userTable } from "db/user";
 
 export class UserCreate extends OpenAPIRoute {
   schema = {
@@ -14,7 +12,7 @@ export class UserCreate extends OpenAPIRoute {
       body: {
         content: {
           "application/json": {
-            schema: User,
+            schema: insertUserSchema,
           },
         },
       },
@@ -25,11 +23,9 @@ export class UserCreate extends OpenAPIRoute {
         content: {
           "application/json": {
             schema: z.object({
-              series: z.object({
-                success: Bool(),
-                result: z.object({
-                  user: User,
-                }),
+              success: Bool(),
+              result: z.object({
+                user: selectUserSchema,
               }),
             }),
           },
@@ -39,34 +35,40 @@ export class UserCreate extends OpenAPIRoute {
   };
 
   async handle(c: Context<AppBindings>) {
-    // Get validated data
-    // console.log("Validating data", c);
+    try {
+      const data = await this.getValidatedData<typeof this.schema>();
 
-    const data = await this.getValidatedData<typeof this.schema>();
+      const user = data.body;
+      user.role = "audience";
+      user.emailVerified = false;
+      if (user.role == "audience") {
+        user.password = "";
+      }
+      console.log("User", user);
 
-    // Retrieve the validated request body
-    const user = data.body;
-    // console.log("User", user, "env", env(c).ENVIRONMENT);
+      await c.get("db").insert(userTable).values({
+        username: user.username,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        role: user.role,
+      });
+      const userRes = await c.get("db").query.user.findFirst({
+        where: (u, { eq }) => eq(u.email, user.email),
+      });
+      console.log(userRes);
 
-    // Implement your own object insertion here
-    const db = c.get("db");
-    // console.log("DB", db);
-    // const read = await db.get(userTable);
-    // console.log("Read", read);
-    const res = await db.insert(userTable).values({
-      username: user.username,
-      email: user.email,
-      emailVerified: user.emailVerified,
-      refreshToken: user.refreshToken,
-    });
+      // return the new task
+      return { user: userRes };
+    } catch (error) {
+      console.log("Error: ", error);
 
-    // return the new task
-    return {
-      success: true,
-      result: res,
-      test: {
-        env: c.env.ENVIRONMENT,
-      },
-    };
+      return c.json(
+        {
+          success: false,
+          error: String(error),
+        },
+        500
+      );
+    }
   }
 }

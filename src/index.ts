@@ -5,13 +5,7 @@ import { AppBindings } from "bindings";
 import { initalizeDB } from "./db/db";
 import { admin, home } from "./routes/routes";
 import { fromHono } from "chanfana";
-import {
-  UserCreate,
-  UserDelete,
-  UserList,
-  UserRead,
-} from "controller/user/user";
-
+import { UserCreate } from "controller/user/userCreate";
 const app = new Hono<AppBindings>();
 app
   .use(logger())
@@ -34,9 +28,9 @@ const openapi = fromHono(app, {
   docs_url: "/api",
 });
 
-openapi.get("/user", UserList);
+// openapi.get("/user", UserList);
 openapi.post("/user", UserCreate);
-openapi.get("/user/:taskSlug", UserRead);
-openapi.delete("/user/:taskSlug", UserDelete);
+// openapi.get("/user/:taskSlug", UserRead);
+// openapi.delete("/user/:taskSlug", UserDelete);
 
 export default app;

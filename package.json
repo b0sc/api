@@ -8,16 +8,16 @@
     "start": "wrangler dev",
     "cf-typegen": "wrangler types",
     "db:generate": "drizzle-kit generate",
+    "db:migrate": "npm run db:generate && npm run db:migrate:local",
     "db:migrate:local": "wrangler d1 migrations apply api-db --local",
     "db:migrate:prod": "wrangler d1 migrations apply api-db --remote",
     "studio:prod": "drizzle-kit studio",
     "studio:local": "cross-env LOCAL_DB_PATH=$(find .wrangler/state/v3/d1/miniflare-D1DatabaseObject -type f -name '*.sqlite' -print -quit) drizzle-kit studio"
   },
   "dependencies": {
-    "better-sqlite3": "^11.6.0",
-    "chanfana": "^2.0.2",
-    "cross-env": "^7.0.3",
+    "chanfana": "^2.3.0",
     "drizzle-orm": "^0.36.4",
+    "drizzle-zod": "^0.5.1",
     "hono": "^4.4.7",
     "zod": "^3.23.8"
   },
@@ -25,6 +25,7 @@
     "@cloudflare/workers-types": "^4.20241112.0",
     "@types/node": "20.8.3",
     "@types/service-worker-mock": "^2.0.1",
+    "cross-env": "^7.0.3",
     "drizzle-kit": "^0.28.1",
     "wrangler": "^3.91.0"
   }
