@@ -7,17 +7,16 @@
     "dev": "wrangler dev",
     "start": "wrangler dev",
     "cf-typegen": "wrangler types",
-    "drizzle:studio": "drizzle-kit studio",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit generate",
-    "db:wrangler_migrate": "wrangler d1 migrations apply demo --local",
-    "db:migrate:prod": "wrangler d1 migrations apply demo --remote",
-    "generate": "drizzle-kit generate:sqlite --schema=src/schema.ts",
-    "up": "drizzle-kit up:sqlite --schema=src/schema.ts"
+    "db:migrate:local": "wrangler d1 migrations apply api-db --local",
+    "db:migrate:prod": "wrangler d1 migrations apply api-db --remote",
+    "studio:prod": "drizzle-kit studio",
+    "studio:local": "cross-env LOCAL_DB_PATH=$(find .wrangler/state/v3/d1/miniflare-D1DatabaseObject -type f -name '*.sqlite' -print -quit) drizzle-kit studio"
   },
   "dependencies": {
     "better-sqlite3": "^11.6.0",
     "chanfana": "^2.0.2",
+    "cross-env": "^7.0.3",
     "drizzle-orm": "^0.36.4",
     "hono": "^4.4.7",
     "zod": "^3.23.8"
@@ -27,6 +26,6 @@
     "@types/node": "20.8.3",
     "@types/service-worker-mock": "^2.0.1",
     "drizzle-kit": "^0.28.1",
-    "wrangler": "^3.60.3"
+    "wrangler": "^3.91.0"
   }
 }

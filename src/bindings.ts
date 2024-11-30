@@ -22,7 +22,7 @@ type Env = {
   USERNAME: string;
   PASSWORD: string;
   DB: D1Database;
-  WORKER_ENV: "production" | "development";
+  ENVIRONMENT: "production" | "development";
   //   GITHUB_CLIENT_ID: string;
   //   GITHUB_CLIENT_SECRET: string;
   GOOGLE_CLIENT_ID: string;

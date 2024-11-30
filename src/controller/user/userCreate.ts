@@ -1,10 +1,10 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { Task, User } from "../../types";
+import { User } from "../../types";
 import { AppBindings } from "bindings";
 import { Context } from "hono";
+import { env } from "hono/adapter";
 import { userTable } from "db/user";
-import { log } from "console";
 
 export class UserCreate extends OpenAPIRoute {
   schema = {
@@ -46,10 +46,13 @@ export class UserCreate extends OpenAPIRoute {
 
     // Retrieve the validated request body
     const user = data.body;
-    console.log("User", user);
+    // console.log("User", user, "env", env(c).ENVIRONMENT);
 
     // Implement your own object insertion here
     const db = c.get("db");
+    // console.log("DB", db);
+    // const read = await db.get(userTable);
+    // console.log("Read", read);
     const res = await db.insert(userTable).values({
       username: user.username,
       email: user.email,
@@ -61,6 +64,9 @@ export class UserCreate extends OpenAPIRoute {
     return {
       success: true,
       result: res,
+      test: {
+        env: c.env.ENVIRONMENT,
+      },
     };
   }
 }

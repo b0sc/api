@@ -13,9 +13,17 @@ node_compat = true
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#d1-databases
 [[d1_databases]]
 binding = "DB"
+preview_database_id = "DB"
 database_name = "api-db"
 migrations_dir = "./migrations"
 database_id = "505a3a6b-2ebe-4475-bc3a-79c5db0838c7"
+
+[vars]
+ENVIRONMENT = "development"
+
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
 
 # Workers Logs
 # Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
