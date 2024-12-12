@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { basicAuth } from "hono/basic-auth";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { AppBindings } from "bindings";
@@ -6,6 +7,7 @@ import { initalizeDB } from "./db/db";
 import { admin, home } from "./routes/routes";
 import { fromHono } from "chanfana";
 import { UserCreate } from "controller/user/userCreate";
+import { UserDelete } from "controller/user/userDelete";
 const app = new Hono<AppBindings>();
 app
   .use(logger())
@@ -37,6 +39,7 @@ const openapi = fromHono(app, {
 
 // openapi.get("/user", UserList);
 openapi.post("/user", UserCreate);
+openapi.delete("/user/:userSlug", UserDelete);
 
 // openapi.get("/user/:taskSlug", UserRead);
 // openapi.delete("/user/:taskSlug", UserDelete);

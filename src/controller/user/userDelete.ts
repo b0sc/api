@@ -1,27 +1,30 @@
-import { Bool, OpenAPIRoute, Str } from "chanfana";
+import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { Task } from "../../types";
+import { AppBindings } from "bindings";
+import { Context } from "hono";
+import { selectUserSchema, userTable } from "db/user";
+import { basicAuth } from "hono/basic-auth";
+import { user } from "db/schema";
+import { eq } from "drizzle-orm";
 
 export class UserDelete extends OpenAPIRoute {
   schema = {
-    tags: ["Tasks"],
-    summary: "Delete a Task",
+    tags: ["User"],
+    summary: "Delete a User",
     request: {
       params: z.object({
-        taskSlug: Str({ description: "Task slug" }),
+        userSlug: z.number({ description: "User slug" }),
       }),
     },
     responses: {
       "200": {
-        description: "Returns if the task was deleted successfully",
+        description: "Returns if the user was deleted successfully",
         content: {
           "application/json": {
             schema: z.object({
-              series: z.object({
-                success: Bool(),
-                result: z.object({
-                  task: Task,
-                }),
+              success: Bool(),
+              result: z.object({
+                user: selectUserSchema,
               }),
             }),
           },
@@ -30,27 +33,43 @@ export class UserDelete extends OpenAPIRoute {
     },
   };
 
-  async handle(c) {
-    // Get validated data
-    const data = await this.getValidatedData<typeof this.schema>();
-
-    // Retrieve the validated slug
-    const { taskSlug } = data.params;
-
-    // Implement your own object deletion here
-
-    // Return the deleted task for confirmation
-    return {
-      result: {
-        task: {
-          name: "Build something awesome with Cloudflare Workers",
-          slug: taskSlug,
-          description: "Lorem Ipsum",
-          completed: true,
-          due_date: "2022-12-24",
+  async handle(c: Context<AppBindings>) {
+    basicAuth({
+      username: c.env.USERNAME,
+      password: c.env.PASSWORD,
+    });
+    try {
+      console.log("test1");
+      const data = await this.getValidatedData<typeof this.schema>();
+      console.log("test3");
+      const userSlug = data.params.userSlug;
+      console.log(userSlug);
+      const userRes = await c.get("db").query.user.findFirst({
+        where: (u, { eq }) => eq(u.id, userSlug),
+      });
+      if (!userRes) {
+        throw new Error("User Doesn't exist");
+      }
+      if (userRes.role != "audience") {
+        throw new Error("you can only delete audience");
+      }
+      const res = await c
+        .get("db")
+        .delete(userTable)
+        .where(eq(user.id, userSlug));
+      if (!res.success) {
+        throw new Error("Could not delete from db");
+      }
+      return { user: userRes };
+    } catch (error) {
+      console.log("Error: ", error);
+      return c.json(
+        {
+          success: false,
+          error: String(error),
         },
-      },
-      success: true,
-    };
+        500,
+      );
+    }
   }
 }
