@@ -16,8 +16,15 @@ app
     });
     return handler(c, next);
   })
-  .use((c, next) => {
+  .use(async (c, next) => {
     initalizeDB(c);
+    const limit = c.req.url;
+    const { success } = await c.env.MY_RATE_LIMITER.limit({ key: limit });
+    if (!success) {
+      return new Response(`429 Failure – rate limit exceeded for ${limit}`, {
+        status: 429,
+      });
+    }
     return next();
   });
 
@@ -30,6 +37,7 @@ const openapi = fromHono(app, {
 
 // openapi.get("/user", UserList);
 openapi.post("/user", UserCreate);
+
 // openapi.get("/user/:taskSlug", UserRead);
 // openapi.delete("/user/:taskSlug", UserDelete);
 

@@ -21,6 +21,7 @@ export interface AppBindings {
 type Env = {
   USERNAME: string;
   PASSWORD: string;
+  MY_RATE_LIMITER: any;
   DB: D1Database;
   ENVIRONMENT: "production" | "development";
   //   GITHUB_CLIENT_ID: string;
