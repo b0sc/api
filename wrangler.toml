@@ -16,7 +16,7 @@ binding = "DB"
 preview_database_id = "DB"
 database_name = "api-db"
 migrations_dir = "./migrations"
-database_id = "c9d7cde2-34f2-4adf-92ac-68b5dc0ee924"
+database_id = "505a3a6b-2ebe-4475-bc3a-79c5db0838c7"
 
 [[unsafe.bindings]]
 name = "MY_RATE_LIMITER"
