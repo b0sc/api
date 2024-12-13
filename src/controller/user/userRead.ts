@@ -1,6 +1,5 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import { Task } from "../../types";
 
 export class UserRead extends OpenAPIRoute {
   schema = {

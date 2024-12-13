@@ -7,7 +7,7 @@ import { initalizeDB } from "./db/db";
 import { admin, home } from "./routes/routes";
 import { fromHono } from "chanfana";
 import { UserCreate } from "controller/user/userCreate";
-import { UserDelete } from "controller/user/userDelete";
+import { UserList } from "controller/user/userList";
 const app = new Hono<AppBindings>();
 app
   .use(logger())
@@ -39,7 +39,7 @@ const openapi = fromHono(app, {
 
 // openapi.get("/user", UserList);
 openapi.post("/user", UserCreate);
-openapi.delete("/user/:userSlug", UserDelete);
+openapi.get("/user", UserList);
 
 // openapi.get("/user/:taskSlug", UserRead);
 // openapi.delete("/user/:taskSlug", UserDelete);

@@ -1,35 +1,23 @@
-import { Bool, Num, OpenAPIRoute } from "chanfana";
+import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { Task } from "../../types";
+import { AppBindings } from "bindings";
+import { Context } from "hono";
+import { selectUserSchema, userTable } from "db/user";
+import { basicAuth } from "hono/basic-auth";
 
 export class UserList extends OpenAPIRoute {
   schema = {
-    tags: ["Tasks"],
-    summary: "List Tasks",
-    request: {
-      query: z.object({
-        page: Num({
-          description: "Page number",
-          default: 0,
-        }),
-        isCompleted: Bool({
-          description: "Filter by completed flag",
-          required: false,
-        }),
-      }),
-    },
+    tags: ["User"],
+    summary: "Fetch all Users",
+    request: {},
     responses: {
       "200": {
-        description: "Returns a list of tasks",
+        description: "Returns a list of all Users",
         content: {
           "application/json": {
             schema: z.object({
-              series: z.object({
-                success: Bool(),
-                result: z.object({
-                  tasks: Task.array(),
-                }),
-              }),
+              success: Bool(),
+              result: z.object({ selectUserSchema }),
             }),
           },
         },
@@ -37,33 +25,23 @@ export class UserList extends OpenAPIRoute {
     },
   };
 
-  async handle(c) {
-    // Get validated data
-    const data = await this.getValidatedData<typeof this.schema>();
-
-    // Retrieve the validated parameters
-    const { page, isCompleted } = data.query;
-
-    // Implement your own object list here
-
-    return {
-      success: true,
-      tasks: [
+  async handle(c: Context<AppBindings>) {
+    basicAuth({
+      username: c.env.USERNAME,
+      password: c.env.PASSWORD,
+    });
+    try {
+      const res = await c.get("db").select().from(userTable);
+      return { res: res };
+    } catch (error) {
+      console.log("Error:", error);
+      return c.json(
         {
-          name: "Clean my room",
-          slug: "clean-room",
-          description: null,
-          completed: false,
-          due_date: "2025-01-05",
+          success: false,
+          error: String(error),
         },
-        {
-          name: "Build something awesome with Cloudflare Workers",
-          slug: "cloudflare-workers",
-          description: "Lorem Ipsum",
-          completed: true,
-          due_date: "2022-12-24",
-        },
-      ],
-    };
+        500,
+      );
+    }
   }
 }
