@@ -3,5 +3,6 @@ PASSWORD=admin
 ENVIRONMENT=development
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
+ADMINS=aoogleak@gmail.com,boscofficial2021@gmail.com
 API_DOMAIN=http://localhost:8787
 WEB_DOMAIN=http://localhost:4321

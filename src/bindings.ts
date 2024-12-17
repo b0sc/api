@@ -1,15 +1,12 @@
 import type { Database } from "./db/db";
 
-import type { InferInsertModel } from "drizzle-orm";
+import type { DatabaseUserAttributes, Session } from "types";
 
-import type { userTable } from "./db/user";
-
-export type DatabaseUserAttributes = InferInsertModel<typeof userTable>;
 type Variables = {
   // with c.var
   db: Database;
   user: (DatabaseUserAttributes & { id: string }) | null;
-  //   session: Session | null;
+  session: Session | null;
 };
 
 export interface AppBindings {
@@ -28,6 +25,7 @@ type Env = {
   //   GITHUB_CLIENT_SECRET: string;
   GOOGLE_CLIENT_ID: string;
   GOOGLE_CLIENT_SECRET: string;
+  ADMINS: string;
   API_DOMAIN: string;
   WEB_DOMAIN: string;
 };

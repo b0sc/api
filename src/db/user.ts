@@ -1,7 +1,6 @@
 import { sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { z } from "zod";
 
 const userTable = sqliteTable("user", {
   id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
@@ -21,17 +20,24 @@ const userTable = sqliteTable("user", {
     .notNull(),
 });
 
+type SelectUser = typeof userTable.$inferSelect;
+// todo: error with insertuser available fields, file:types.ts, user/userCreate.ts, auth/google.ts, db/user.ts
+// why does insertUser has only username and email fields
+type InsertUser = typeof userTable.$inferInsert;
+
 // Schema for inserting a user - can be used to validate API requests
-const insertUserSchema = createInsertSchema(userTable, {
-  id: (schema) => schema.id.nullish(),
-  emailVerified: z.boolean(),
-  username: z.string(),
-});
+const insertUserSchema = createInsertSchema(userTable);
 
 // Schema for selecting a user - can be used to validate API responses
 const selectUserSchema = createSelectSchema(userTable);
 
-export { userTable, insertUserSchema, selectUserSchema };
+export {
+  userTable,
+  insertUserSchema,
+  selectUserSchema,
+  SelectUser,
+  InsertUser,
+};
 
 // Overriding the fields
 // const insertUserSchema = createInsertSchema(userTable, {

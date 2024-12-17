@@ -50,6 +50,27 @@
       "when": 1732983394432,
       "tag": "0006_dizzy_blazing_skull",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1734188554369,
+      "tag": "0007_short_chronomancer",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1734433425660,
+      "tag": "0008_melted_preak",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1734437311437,
+      "tag": "0009_eager_colossus",
+      "breakpoints": true
     }
   ]
 }

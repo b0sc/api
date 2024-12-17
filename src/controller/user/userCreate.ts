@@ -1,8 +1,9 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { AppBindings } from "bindings";
+import type { AppBindings } from "bindings";
 import { Context } from "hono";
 import { insertUserSchema, selectUserSchema, userTable } from "db/user";
+import type { InsertUser } from "db/user";
 
 export class UserCreate extends OpenAPIRoute {
   schema = {
@@ -46,6 +47,7 @@ export class UserCreate extends OpenAPIRoute {
       }
       console.log("User", user);
 
+      // todo: error with insertuser available fields, file:types.ts, user/userCreate.ts, auth/google.ts, db/user.ts
       await c.get("db").insert(userTable).values({
         username: user.username,
         email: user.email,

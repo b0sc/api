@@ -15,6 +15,10 @@
     "studio:local": "cross-env LOCAL_DB_PATH=$(find .wrangler/state/v3/d1/miniflare-D1DatabaseObject -type f -name '*.sqlite' -print -quit) drizzle-kit studio"
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.4.2",
+    "@oslojs/crypto": "^1.0.1",
+    "@oslojs/encoding": "^1.1.0",
+    "arctic": "^2.3.1",
     "chanfana": "^2.3.0",
     "drizzle-orm": "^0.36.4",
     "drizzle-zod": "^0.5.1",

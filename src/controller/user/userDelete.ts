@@ -34,40 +34,40 @@ export class UserDelete extends OpenAPIRoute {
   };
 
   async handle(c: Context<AppBindings>) {
-    // try {
-    //   //TODO:https://github.com/PoskOfficial/Miti/blob/v2/apps/api/src/auth/oslo-auth.ts read this thingy
-    //   basicAuth({
-    //     username: c.env.USERNAME,
-    //     password: c.env.PASSWORD,
-    //   });
-    //   const data = await this.getValidatedData<typeof this.schema>();
-    //   const userSlug = data.params.userSlug;
-    //   const userRes = await c.get("db").query.user.findFirst({
-    //     where: (u, { eq }) => eq(u.id, userSlug),
-    //   });
-    //   if (!userRes) {
-    //     throw new Error("User Doesn't exist");
-    //   }
-    //   if (userRes.role != "audience") {
-    //     throw new Error("you can only delete audience");
-    //   }
-    //   const res = await c
-    //     .get("db")
-    //     .delete(userTable)
-    //     .where(eq(user.id, userSlug));
-    //   if (!res.success) {
-    //     throw new Error("Could not delete from db");
-    //   }
-    //   return { user: userRes };
-    // } catch (error) {
-    //   console.log("Error: ", error);
-    //   return c.json(
-    //     {
-    //       success: false,
-    //       error: String(error),
-    //     },
-    //     500,
-    //   );
-    // }
+    try {
+      //TODO:https://github.com/PoskOfficial/Miti/blob/v2/apps/api/src/auth/oslo-auth.ts read this thingy
+      basicAuth({
+        username: c.env.USERNAME,
+        password: c.env.PASSWORD,
+      });
+      const data = await this.getValidatedData<typeof this.schema>();
+      const userSlug = data.params.userSlug;
+      const userRes = await c.get("db").query.user.findFirst({
+        where: (u, { eq }) => eq(u.id, userSlug),
+      });
+      if (!userRes) {
+        throw new Error("User Doesn't exist");
+      }
+      if (userRes.role != "audience") {
+        throw new Error("you can only delete audience");
+      }
+      const res = await c
+        .get("db")
+        .delete(userTable)
+        .where(eq(user.id, userSlug));
+      if (!res.success) {
+        throw new Error("Could not delete from db");
+      }
+      return { user: userRes };
+    } catch (error) {
+      console.log("Error: ", error);
+      return c.json(
+        {
+          success: false,
+          error: String(error),
+        },
+        500
+      );
+    }
   }
 }

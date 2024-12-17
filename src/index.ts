@@ -8,6 +8,8 @@ import { admin, home } from "./routes/routes";
 import { fromHono } from "chanfana";
 import { UserCreate } from "controller/user/userCreate";
 import { UserList } from "controller/user/userList";
+import { AuthController } from "controller/auth/auth.controller";
+
 const app = new Hono<AppBindings>();
 app
   .use(logger())
@@ -32,16 +34,16 @@ app
 
 app.route("/", home);
 app.route("/admin", admin);
+app.route("/auth", AuthController);
 
 const openapi = fromHono(app, {
   docs_url: "/api",
 });
 
-// openapi.get("/user", UserList);
 openapi.post("/user", UserCreate);
-openapi.get("/user", UserList);
+// openapi.get("/user", UserList);
+// openapi.delete("/user/:taskSlug", UserDelete);
 
 // openapi.get("/user/:taskSlug", UserRead);
-// openapi.delete("/user/:taskSlug", UserDelete);
 
 export default app;
