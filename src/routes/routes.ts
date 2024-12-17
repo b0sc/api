@@ -25,6 +25,7 @@ admin.get("/", (c) => {
 
 const home = new Hono<AppBindings>();
 home.get("/", (c) => {
+  const domain = c.env.API_DOMAIN;
   const session = getCookie(c, "session");
   let loggedIn = false;
   if (session) {
@@ -35,7 +36,7 @@ home.get("/", (c) => {
     <html lang="en">
     ${Header()}
       <body>
-        ${Content(loggedIn)}
+        ${Content(loggedIn, domain)}
       </body>
     </html>
     `);
@@ -54,7 +55,7 @@ const Header = () => html`
   </head>
 `;
 
-const Content = (loggedIn: boolean) => html`
+const Content = (loggedIn: boolean, domain: string) => html`
   <div>
     <h1>Welcome to BOSC API</h1>
     <p>
@@ -64,13 +65,13 @@ const Content = (loggedIn: boolean) => html`
     <a href="/api">API</a>
     <h1>Login as a Club Executive</h1>
 
-    ${loggedIn ? LogoutContent() : LoginContent()}
+    ${loggedIn ? LogoutContent() : LoginContent(domain)}
   </div>
 `;
 
-const LoginContent = () => html`
+const LoginContent = (domain: string) => html`
   <div id="login">
-    <a href="http://localhost:8787/auth/google?redirect=http://localhost:8787">
+    <a href="${domain}/auth/google?redirect=${domain}">
       <img
         src="/google_signin_light.png"
         alt="Sign in with Google"
