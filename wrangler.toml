@@ -30,6 +30,15 @@ namespace_id = "1001"
 # Period: the duration of the period, in seconds. Must be either 10 or 60
 simple = { limit = 20, period = 10 }
 
+send_email = [
+    {type = "send_email", name = "SEB", destination_address = "xxx"},
+]
+
+[vars]
+RECIPIENT_ADDRESS = "*"
+SENDER_ADDRESS = "*"
+SENDER_NAME = "*"
+
 # Workers Logs
 # Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
 # Configuration: https://developers.cloudflare.com/workers/observability/logs/workers-logs/#enable-workers-logs
