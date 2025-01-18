@@ -44,6 +44,9 @@ export class MailPost extends OpenAPIRoute {
       const mail = data.body;
       console.log("Mail", mail);
 
+      // bijesh do it
+      //www.cubebackup.com/blog/how-to-use-google-smtp-service-to-send-emails-for-free/
+
       // const msg = createMimeMessage();
       // msg.setSender({ name: c.env.SENDER_NAME, addr: c.env.SENDER_ADDRESS });
       // msg.setRecipient(c.env.RECIPIENT_ADDRESS);
@@ -72,7 +75,7 @@ export class MailPost extends OpenAPIRoute {
       //     success: false,
       //   };
       // }
-      return {
+      https: return {
         success: true,
       };
     } catch (error) {
